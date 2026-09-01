@@ -17,7 +17,7 @@ export const doctorSchedules = pgTable('doctor_schedules', {
 })
 
 export const patientDischarges = pgTable('patient_discharges', {
-  id: uuid('id').defaultRandom().primaryKey(), patientId: uuid('patient_id').notNull(), registrationId: uuid('registration_id'), status: text('status').default('Menunggu pengesahan').notNull(), dischargedAt: timestamp('discharged_at', { withTimezone: true }), approvedBy: text('approved_by'), notes: text('notes').default('').notNull(), createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  id: uuid('id').defaultRandom().primaryKey(), patientId: uuid('patient_id').notNull(), registrationId: uuid('registration_id'), status: text('status').default('Menunggu pengesahan').notNull(), dischargedAt: timestamp('discharged_at', { withTimezone: true }), approvedBy: text('approved_by'), actionDetails: text('action_details').default('').notNull(), medicineDetails: text('medicine_details').default('').notNull(), serviceDetails: text('service_details').default('').notNull(), actionCost: integer('action_cost').default(0).notNull(), medicineCost: integer('medicine_cost').default(0).notNull(), serviceCost: integer('service_cost').default(0).notNull(), notes: text('notes').default('').notNull(), createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const medicalRecords = pgTable('medical_records', {
