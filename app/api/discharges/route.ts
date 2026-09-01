@@ -12,6 +12,17 @@ export async function GET() {
   }
 }
 
+export async function POST(request: Request) {
+  try {
+    const { patientId, registrationId, notes } = await request.json()
+    if (!patientId) return NextResponse.json({ error: 'Pasien wajib dipilih.' }, { status: 400 })
+    const [discharge] = await db.insert(patientDischarges).values({ patientId, registrationId: registrationId || null, notes: notes || '' }).returning()
+    return NextResponse.json({ discharge }, { status: 201 })
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Action kepulangan gagal disimpan.' }, { status: 500 })
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const { id, approvedBy, notes } = await request.json()
