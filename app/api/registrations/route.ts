@@ -9,7 +9,7 @@ const registrationSchema = z.object({
   nationalId: z.string().trim().min(5).max(32).optional(),
   birthDate: z.string().date(),
   phone: z.string().trim().min(8).max(24),
-  clinic: z.string().trim().min(2).max(80),
+  clinic: z.string().trim().min(2).max(80).optional(),
   doctor: z.string().trim().min(2).max(120).optional(),
   visitDate: z.string().date().optional(),
   complaint: z.string().trim().min(2).max(500).optional(),
@@ -18,10 +18,11 @@ const registrationSchema = z.object({
 export async function POST(request: Request) {
   try {
     const parsed = registrationSchema.safeParse(await request.json())
-    if (!parsed.success) return NextResponse.json({ error: 'Data pendaftaran belum lengkap.' }, { status: 400 })
+    if (!parsed.success) return NextResponse.json({ error: 'Nama, tanggal lahir, dan nomor telepon wajib diisi dengan benar.' }, { status: 400 })
     const input = parsed.data
     const data = {
       ...input,
+      clinic: input.clinic || 'Poli Umum',
       nationalId: input.nationalId || `PHONE-${input.phone}`,
       doctor: input.doctor || 'Dokter jaga',
       visitDate: input.visitDate || new Date().toISOString().slice(0, 10),
