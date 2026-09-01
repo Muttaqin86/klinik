@@ -4,6 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.data-table { width: 100%; min-width: 720px; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+.data-table th { background: color-mix(in oklch, var(--muted) 55%, transparent); padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: var(--muted-foreground); }
+.data-table td { border-top: 1px solid var(--border); padding: 1rem 1.25rem; color: var(--muted-foreground); vertical-align: middle; }
+.data-table td b { display: block; color: var(--foreground); font-weight: 600; }
+.data-table td small { display: block; margin-top: 0.25rem; font-size: 0.75rem; }
+.status { display: inline-flex; border-radius: 999px; background: color-mix(in oklch, var(--primary) 10%, transparent); padding: 0.35rem 0.65rem; font-size: 0.75rem; font-weight: 600; color: var(--primary); }
+
 @theme inline {
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
