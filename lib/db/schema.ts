@@ -15,3 +15,7 @@ export const doctors = pgTable('doctors', {
 export const doctorSchedules = pgTable('doctor_schedules', {
   id: uuid('id').defaultRandom().primaryKey(), doctorId: uuid('doctor_id').notNull(), dayOfWeek: integer('day_of_week').notNull(), startTime: time('start_time').notNull(), endTime: time('end_time').notNull(), active: boolean('active').default(true).notNull(), createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
+
+export const medicalRecords = pgTable('medical_records', {
+  id: uuid('id').defaultRandom().primaryKey(), patientId: uuid('patient_id').notNull(), registrationId: uuid('registration_id'), visitDate: date('visit_date').defaultNow().notNull(), diagnosis: text('diagnosis').notNull(), treatment: text('treatment').notNull(), doctor: text('doctor').notNull(), notes: text('notes').default('').notNull(), createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+})
