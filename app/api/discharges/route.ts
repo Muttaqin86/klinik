@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 import { desc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { patientDischarges, patients } from '@/lib/db/schema'
+import { patientDischarges, patients, registrations } from '@/lib/db/schema'
 
 export async function GET() {
   try {
-    const discharges = await db.select({ id: patientDischarges.id, patientId: patientDischarges.patientId, patientName: patients.name, status: patientDischarges.status, dischargedAt: patientDischarges.dischargedAt, approvedBy: patientDischarges.approvedBy, notes: patientDischarges.notes, createdAt: patientDischarges.createdAt }).from(patientDischarges).leftJoin(patients, eq(patientDischarges.patientId, patients.id)).orderBy(desc(patientDischarges.createdAt))
-    return NextResponse.json({ discharges })
+    const registrationsList = await db.select({ id: registrations.id, registrationId: registrations.id, patientId: registrations.patientId, patientName: patients.name, phone: patients.phone, clinic: registrations.clinic, doctor: registrations.doctor, visitDate: registrations.visitDate, queueNumber: registrations.queueNumber, dischargeId: patientDischarges.id, status: patientDischarges.status, dischargedAt: patientDischarges.dischargedAt, approvedBy: patientDischarges.approvedBy, notes: patientDischarges.notes }).from(registrations).leftJoin(patients, eq(registrations.patientId, patients.id)).leftJoin(patientDischarges, eq(patientDischarges.registrationId, registrations.id)).orderBy(desc(registrations.createdAt)).limit(100)
+    return NextResponse.json({ registrations: registrationsList })
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Data kepulangan gagal dimuat.' }, { status: 500 })
   }
