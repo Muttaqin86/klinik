@@ -47,6 +47,28 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const rows = await db.select().from(registrations).orderBy(desc(registrations.createdAt)).limit(50)
-  return NextResponse.json({ registrations: rows })
+  try {
+    const rows = await db
+      .select({
+        id: registrations.id,
+        patientId: registrations.patientId,
+        patientName: patients.name,
+        phone: patients.phone,
+        clinic: registrations.clinic,
+        doctor: registrations.doctor,
+        visitDate: registrations.visitDate,
+        complaint: registrations.complaint,
+        status: registrations.status,
+        queueNumber: registrations.queueNumber,
+        createdAt: registrations.createdAt,
+      })
+      .from(registrations)
+      .leftJoin(patients, eq(registrations.patientId, patients.id))
+      .orderBy(desc(registrations.createdAt))
+      .limit(50)
+    return NextResponse.json({ registrations: rows })
+  } catch (error) {
+    console.error('[v0] Registration list error', error)
+    return NextResponse.json({ error: 'Data pendaftaran gagal dimuat.' }, { status: 500 })
+  }
 }
