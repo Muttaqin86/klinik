@@ -161,3 +161,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+:root {
+  --background: oklch(0.98 0.012 190);
+  --foreground: oklch(0.22 0.025 235);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.025 235);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.025 235);
+  --primary: oklch(0.46 0.12 185);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.025 190);
+  --secondary-foreground: oklch(0.3 0.05 215);
+  --muted: oklch(0.955 0.012 210);
+  --muted-foreground: oklch(0.52 0.035 225);
+  --accent: oklch(0.94 0.025 190);
+  --accent-foreground: oklch(0.3 0.05 215);
+  --border: oklch(0.9 0.018 210);
+  --input: oklch(0.88 0.02 210);
+  --ring: oklch(0.46 0.12 185);
+}
+
+html { background: var(--background); }
