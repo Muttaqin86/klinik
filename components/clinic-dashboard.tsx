@@ -48,7 +48,13 @@ export default function ClinicDashboard() {
     const registration = discharges.find((item) => item.registrationId === id)
     if (!registration) return
     const response = await fetch('/api/discharges', { method: registration.dischargeId ? 'PATCH' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registration.dischargeId ? { id: registration.dischargeId } : { patientId: registration.patientId, registrationId: registration.registrationId }) })
-    if (!response.ok) { const data = await response.json(); setError(data.error || 'Pengesahan gagal disimpan.'); return }
+    const data = await response.json()
+    if (!response.ok) { setError(data.error || 'Pengesahan gagal disimpan.'); return }
+    if (!registration.dischargeId) {
+      const approveResponse = await fetch('/api/discharges', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: data.discharge.id }) })
+      const approveData = await approveResponse.json()
+      if (!approveResponse.ok) { setError(approveData.error || 'Pengesahan gagal disimpan.'); return }
+    }
     setDischarges((items) => items.map((item) => item.registrationId === id ? { ...item, dischargeId: item.dischargeId ?? data.discharge?.id ?? 'local', status: 'Disahkan', dischargedAt: new Date().toISOString(), approvedBy: 'Admin Klinik' } : item))
   }
 
