@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Activity, Bell, CalendarDays, Check, ChevronDown, CircleHelp, FileText, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen, Plus, Search, Settings, Stethoscope, UsersRound, X } from 'lucide-react'
+import { Activity, Bell, CalendarDays, Check, ChevronDown, CircleHelp, ClipboardCheck, FileText, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen, Plus, Search, Settings, Stethoscope, UsersRound, X } from 'lucide-react'
 
 type Registration = { id: string; patientName: string | null; phone: string | null; clinic: string; doctor: string; visitDate: string; status: string; queueNumber: number }
 type Patient = { id: string; name: string; nationalId: string; birthDate: string; phone: string; createdAt: string }
@@ -9,7 +9,7 @@ type Doctor = { id: string; name: string; specialty: string; room: string; dayOf
 type Record = { id: string; patientName: string | null; visitDate: string; diagnosis: string; treatment: string; doctor: string; notes: string }
 type Discharge = { id: string; patientName: string | null; status: string; dischargedAt: string | null; approvedBy: string | null; notes: string }
 
-const nav = [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Pendaftaran', icon: FileText }, { label: 'Pasien', icon: UsersRound }, { label: 'Jadwal Dokter', icon: CalendarDays }, { label: 'Rekam Medis', icon: Activity }, { label: 'Kepulangan Pasien', icon: Check }]
+const nav = [{ label: 'Dashboard', icon: LayoutDashboard }, { label: 'Pendaftaran', icon: FileText }, { label: 'Pasien', icon: UsersRound }, { label: 'Jadwal Dokter', icon: CalendarDays }, { label: 'Rekam Medis', icon: Activity }, { label: 'Kepulangan Pasien', icon: ClipboardCheck }]
 const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
 
 export default function ClinicDashboard() {
@@ -31,7 +31,7 @@ export default function ClinicDashboard() {
   useEffect(() => {
     const endpoint = active === 'Dashboard' || active === 'Pendaftaran' ? '/api/registrations' : active === 'Pasien' ? '/api/patients' : active === 'Jadwal Dokter' ? '/api/doctors' : active === 'Kepulangan Pasien' ? '/api/discharges' : '/api/medical-records'
     setLoading(true); setError('')
-    fetch(endpoint, { cache: 'no-store' }).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error); if (active === 'Pendaftaran') setRegistrations(data.registrations); else if (active === 'Pasien') setPatients(data.patients); else if (active === 'Jadwal Dokter') setDoctors(data.doctors); else if (active === 'Rekam Medis') setRecords(data.records); else setDischarges(data.discharges) }).catch((e) => setError(e.message)).finally(() => setLoading(false))
+    fetch(endpoint, { cache: 'no-store' }).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error); if (active === 'Dashboard' || active === 'Pendaftaran') setRegistrations(data.registrations); else if (active === 'Pasien') setPatients(data.patients); else if (active === 'Jadwal Dokter') setDoctors(data.doctors); else if (active === 'Rekam Medis') setRecords(data.records); else if (active === 'Kepulangan Pasien') setDischarges(data.discharges) }).catch((e) => setError(e.message)).finally(() => setLoading(false))
   }, [active])
 
   async function approveDischarge(id: string) {
