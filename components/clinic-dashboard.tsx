@@ -56,6 +56,7 @@ export default function ClinicDashboard() {
       if (!approveResponse.ok) { setError(approveData.error || 'Pengesahan gagal disimpan.'); return }
     }
     setDischarges((items) => items.map((item) => item.registrationId === id ? { ...item, dischargeId: item.dischargeId ?? data.discharge?.id ?? 'local', status: 'Disahkan', dischargedAt: new Date().toISOString(), approvedBy: 'Admin Klinik' } : item))
+    setRegistrations((items) => items.map((item) => item.id === id ? { ...item, status: 'Selesai' } : item))
   }
 
   async function submitRegistration(event: React.FormEvent<HTMLFormElement>) {

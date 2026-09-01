@@ -29,6 +29,7 @@ export async function PATCH(request: Request) {
     if (!id) return NextResponse.json({ error: 'ID kepulangan wajib diisi.' }, { status: 400 })
     const [discharge] = await db.update(patientDischarges).set({ status: 'Disahkan', dischargedAt: new Date(), approvedBy: approvedBy || 'Admin Klinik', notes: notes || '' }).where(eq(patientDischarges.id, id)).returning()
     if (!discharge) return NextResponse.json({ error: 'Data kepulangan tidak ditemukan.' }, { status: 404 })
+    if (discharge.registrationId) await db.update(registrations).set({ status: 'Selesai' }).where(eq(registrations.id, discharge.registrationId))
     return NextResponse.json({ discharge })
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Pengesahan gagal disimpan.' }, { status: 500 })
